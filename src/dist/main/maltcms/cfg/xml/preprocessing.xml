@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <description>
+        This file defines elements of the default preprocessing pipeline.
+    </description>
+
+    <!-- allow properties to be overidden by command line arguments -->
+    <bean id="placeholderProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+       <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+       <!-- throw an exception for unresolvable placeholders -->
+       <property name="ignoreUnresolvablePlaceholders" value="false" />
+       <property name="order" value="1" />
+    </bean>
+
+    <!-- a command pipeline consists a list of
+     commands to be executed -->
+    <bean id="commandPipeline" class="cross.datastructures.pipeline.CommandPipeline">
+        <property name="checkCommandDependencies" value="true"/>
+        <property name="commands">
+            <list>
+                <ref bean="defaultVarLoader" />
+                <ref bean="denseArrayProducer" />
+            </list>
+        </property>
+    </bean>
+               <!-- commands -->
+    <!-- DefaultVarLoader, loads default variables -->
+    <bean id="defaultVarLoader" class="maltcms.commands.fragments.preprocessing.DefaultVarLoader">
+
+    </bean>
+
+    <!-- DenseArrayProducer, creates a dense profile matrix -->
+    <bean id="denseArrayProducer" class="maltcms.commands.fragments.preprocessing.DenseArrayProducer">
+        <property name="maskedMasses">
+            <list>
+            <!-- <value>73</value> -->
+            <!-- <value>74</value> -->
+            <!-- <value>75</value> -->
+            <!-- <value>147</value> -->
+            <!-- <value>148</value> -->
+            <!-- <value>149</value> -->
+            </list>
+        </property>
+        <property name="invertMaskedMasses" value="false"/>
+        <property name="normalizeScans" value="false"/>
+        <property name="normalizeMeanVariance" value="false"/>
+        <property name="massBinResolution" value="1.0d"/>
+    </bean>
+</beans>

@@ -1,0 +1,6 @@
+mSPA_Dataset_I	BiPace2DEvaluation.groovy
+mSPA_Dataset_I_short	BiPace2DEvaluation.groovy
+mSPA_Dataset_II	BiPace2DEvaluation.groovy
+SWPA_Dataset_I	BiPace2DEvaluation.groovy
+chlamy_Dataset_I	BiPace2DEvaluationChlamy.groovy
+chlamy_Dataset_I-smokeTest	BiPace2DEvaluationChlamySmokeTest.groovy

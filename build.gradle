@@ -1,0 +1,93 @@
+/*
+ *  This build script should remain as is. It should work standalone
+ *  without additional configuration. If not, please contact the author.
+ */
+
+version = '1.8.1'
+
+// Project wide variables
+
+project.ext {
+    maltcms_major=1
+    maltcms_minor=3
+    //maltcms_micro=0
+    maltcms_suffix="-SNAPSHOT"
+    //maltcms_mmms="${maltcms_major}.${maltcms_minor}.${maltcms_micro}${maltcms_suffix}"
+    maltcms_mmms="${maltcms_major}.${maltcms_minor}${maltcms_suffix}"
+    maltcms_version="maltcms-${maltcms_mmms}"
+    maltcms_dir="${maltcms_version}"
+    maltcms_zip="${maltcms_version}-bin.zip"
+//below is the original build version of the maltcms release used for the evaluation
+    //https://maltcms.de/artifactory/libs-snapshot-local/net/sf/maltcms/maltcms-distribution/1.3-SNAPSHOT/maltcms-distribution-1.3-20130610.141219-71.zip
+    maltcms_filename="maltcms-distribution-1.3-20130909.102417-107.zip"
+    maltcms_download="http://maltcms.de/artifactory/libs-snapshot-local/net/sf/maltcms/maltcms-distribution/1.3-SNAPSHOT/${maltcms_filename}"
+    groovy_version="2.1.5"
+    groovy_dir="groovy-${groovy_version}"
+    groovy_zip="groovy-binary-${groovy_version}.zip"
+    groovy_download="http://dist.groovy.codehaus.org/distributions/${groovy_zip}"
+    assets_download="http://sourceforge.net/projects/maltcms/files/pub/bipace2d/assets/"
+    assets_dir="src/dist/main/"
+    assets=["SWPA","mSPA","guineu","chlamy"]
+}
+
+repositories {
+        mavenCentral()
+}
+
+task getAssets << {
+    description = 'Fetches assets from sourceforge.'
+    assets.each{ 
+        asset -> 
+            def assetFile = new File("${assets_dir}/${asset}")
+            if(assetFile.exists()) {
+                println "Directory '${assetFile}' exists, skipping download! (Delete '${assetFile}' manually to force download)"
+            }else{
+                println "Downloading ${asset}.zip"
+                ant.get(
+                    src:"${assets_download}/${asset}.zip",
+                    dest:"${assets_dir}/${asset}.zip",
+                    skipexisting:true
+                )
+                println "Extracting ${asset}.zip"
+                ant.unzip(
+                    src:"${assets_dir}/${asset}.zip",
+                    dest:"${assets_dir}/",
+                    overwrite:false
+                )
+                ant.delete(
+                    file:"${assets_dir}/${asset}.zip"
+                )
+            }
+    }
+
+}
+
+task dist(type: Zip) {
+    description = 'Creates a custom distribution for BiPACE2D evaluation.'
+    archiveName = "build/dist/BiPACE2D-evaluation-src.zip"
+    into("") {
+        from 'src/dist/main'
+        from 'README.md'
+        from 'LICENSE.EPL'
+        from 'LICENSE.LGPL'
+    }
+    into("scripts/") {
+        from "scripts/"
+        exclude "build"
+        exclude ".gradle"
+    }
+}
+
+
+//set dependent tasks
+dist.dependsOn getAssets
+
+task cleanUp << {
+    description = 'Removes binary distribution directories and build files.'
+    ant.delete(dir:"build/")
+    assets.each{
+        asset -> 
+            ant.delete(dir:"${assets_dir}/${asset}/")
+    }
+}
+

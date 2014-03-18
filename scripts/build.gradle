@@ -1,0 +1,144 @@
+/*
+ *  This build script should remain as is. It should work standalone
+ *  without additional configuration. If not, please contact the author.
+ */
+apply plugin: 'groovy'
+
+// Project wide variables
+
+project.ext {
+    maltcms_major=1
+    maltcms_minor=3
+    //maltcms_micro=0
+    maltcms_suffix="-SNAPSHOT"
+    //maltcms_mmms="${maltcms_major}.${maltcms_minor}.${maltcms_micro}${maltcms_suffix}"
+    maltcms_mmms="${maltcms_major}.${maltcms_minor}${maltcms_suffix}"
+    maltcms_version="maltcms-${maltcms_mmms}"
+    maltcms_dir="${maltcms_version}"
+    maltcms_zip="${maltcms_version}-bin.zip"
+//below is the original build version of the maltcms release used for the evaluation
+    //https://maltcms.de/artifactory/libs-snapshot-local/net/sf/maltcms/maltcms-distribution/1.3-SNAPSHOT/maltcms-distribution-1.3-20130610.141219-71.zip
+    maltcms_filename="maltcms-distribution-1.3-20130909.102417-107.zip"
+    maltcms_download="http://maltcms.de/artifactory/libs-snapshot-local/net/sf/maltcms/maltcms-distribution/1.3-SNAPSHOT/${maltcms_filename}"
+    groovy_version="2.1.5"
+    groovy_dir="groovy-${groovy_version}"
+    groovy_zip="groovy-binary-${groovy_version}.zip"
+    groovy_download="http://dist.groovy.codehaus.org/distributions/${groovy_zip}"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        groovy {
+            srcDir 'src/main/groovy'
+            //include scripts for compilation
+            srcDir 'src/main/scripts'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+repositories {
+        mavenCentral()
+}
+
+dependencies {
+    //use groovy from mavenCentral
+    compile(group: 'org.codehaus.groovy', name: 'groovy', version: project.ext.groovy_version)
+    compile(
+        //use the downloaded maltcms api for compilation
+        fileTree(dir: 'maltcms/lib', include: '*.jar')
+    )
+}
+
+task getGroovy << {
+    description = 'Fetches groovy ${groovy_version} binary distribution.'
+    if(new File("groovy").exists()) {
+        println "groovy dir exists, skipping download! (Delete groovy dir to force download)"
+    }else{
+        println "Downloading ${groovy_zip}"
+        ant.get(
+            src:"${groovy_download}",
+            dest:"${groovy_zip}",
+            skipexisting:true
+        )
+       println "Extracting ${groovy_zip}"
+       ant.unzip(
+           src:"${groovy_zip}",
+           dest:".",
+           overwrite: false
+       )
+       println "Renaming to groovy!"
+       ant.move(
+           file:"${groovy_dir}",
+           toFile:"groovy",
+           overwrite:false
+       )
+       ant.delete(
+        file:"${groovy_zip}"
+       )
+       ant.delete(
+        file:"${groovy_dir}"
+       )
+       ant.chmod(
+        dir:"groovy/bin",
+        includes:"*",
+        perm:"ugo+rx"
+       )
+    }
+}
+task getMaltcms << {
+    description = 'Fetches maltcms ${maltcms_version} binary distribution.'
+    if(new File("maltcms").exists()) {
+        println "maltcms dir exists, skipping download! (Delete maltcms dir manually to force download)"
+    }else{
+        println "Downloading ${maltcms_filename}"
+        ant.get(
+            src:"${maltcms_download}",
+            dest:"${maltcms_zip}",
+            skipexisting:true
+        )
+       println "Extracting ${maltcms_zip}"
+       ant.unzip(
+           src:"${maltcms_zip}",
+           dest:".",
+           overwrite: false
+       )
+       println "Renaming to maltcms!"
+       ant.move(
+           file:"${maltcms_dir}",
+           toFile:"maltcms",
+           overwrite:false
+       )
+       ant.delete(
+        file:"${maltcms_zip}"
+       )
+       ant.delete(
+        file:"${maltcms_dir}" 
+       )
+       ant.chmod(
+        dir:"maltcms/",
+        includes:"**/*.sh",
+        perm:"ugo+rx"
+       )
+       if(new File("maltcms/lib/slf4j-jdk14-1.7.2.jar").exists()) {
+        ant.delete(file:"maltcms/lib/slf4j-jdk14-1.7.2.jar")
+       }
+    }
+}
+//set dependent tasks
+compileJava.dependsOn getGroovy,getMaltcms
+
+task cleanUp << {
+    description = 'Removes binary distribution directories.'
+    ant.delete(dir:'maltcms/')
+    ant.delete(dir:'groovy/')
+}
+
+clean.doLast{
+    tasks.cleanUp.execute()
+}

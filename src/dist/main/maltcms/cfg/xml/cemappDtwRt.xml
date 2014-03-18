@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+    <description>
+        This file defines elements of the default CemappDtwRt pipeline.
+    </description>
+
+    <bean id="placeholderProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+           <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+           <property name="ignoreUnresolvablePlaceholders" value="false" />
+           <property name="order" value="1" />
+    </bean>
+
+    <!-- a command pipeline consists a list of
+     commands to be executed -->
+    <bean id="commandPipeline" class="cross.datastructures.pipeline.CommandPipeline">
+        <property name="checkCommandDependencies" value="true"/>
+        <property name="commands">
+            <list>
+                <ref bean="pairwiseDistanceCalculator" />
+                <ref bean="centerStarAlignment" />
+               <!-- <ref bean="chromatogramWarp" /> -->
+            </list>
+        </property>
+    </bean>
+               <!-- commands -->
+    <bean id="dtwGaussianDifferenceSimilarity" class="maltcms.math.functions.similarities.GaussianDifferenceSimilarity" scope="prototype">
+        <property name="tolerance" value="${rtTolerance}"/>
+        <property name="threshold" value="0.0d"/>
+    </bean>
+
+    <!-- array similarity functions -->
+    <bean id="dotSimilarity" class="maltcms.math.functions.similarities.ArrayDot" scope="prototype"/>
+    <bean id="cosineSimilarity" class="maltcms.math.functions.similarities.ArrayCos" scope="prototype"/>
+    <bean id="linCorrSimilarity" class="maltcms.math.functions.similarities.ArrayCorr" scope="prototype"/>
+    <bean id="rankCorrSimilarity" class="maltcms.math.functions.similarities.ArrayRankCorr" scope="prototype"/>
+    <bean id="lpSimilarity" class="maltcms.math.functions.similarities.ArrayLp" scope="prototype"/>
+
+    <!--     PairwiseDistanceCalculator -->
+    <bean id="pairwiseDistanceCalculator" class="maltcms.commands.fragments.cluster.PairwiseDistanceCalculator">
+        <property name="pairsWithFirstElement" value="false"/>
+        <property name="workerFactory" ref="${dtwFactory}"/>
+        <!-- alternative -->
+        <!--<property name="workerFactory" ref="ticDtwWorkerFactory"/>-->
+    </bean>
+
+    <bean id="cumulativeDistance" class="maltcms.commands.distances.DtwRecurrence" scope="prototype">
+        <property name="globalGapPenalty" value="${globalGapPenalty}"/>
+    </bean>
+
+    <bean id="timePenalizedPairwiseSimilarity" class="maltcms.math.functions.DtwTimePenalizedPairwiseSimilarity"
+          scope="prototype">
+        <property name="expansionWeight" value="1.0"/>
+        <property name="matchWeight" value="${matchWeight}"/>
+        <property name="compressionWeight" value="1.0"/>
+        <property name="retentionTimeSimilarity" ref="dtwGaussianDifferenceSimilarity"/>
+        <property name="denseMassSpectraSimilarity" ref="${arraySimilarity}"/>
+    </bean>
+
+    <bean id="ticDtwWorkerFactory" class="maltcms.commands.fragments.cluster.pairwiseDistanceCalculator.TicDtwWorkerFactory">
+        <property name="anchorRadius" value="${anchorRadius}"/>
+        <property name="useAnchors" value="${useAnchors}"/>
+        <property name="minScansBetweenAnchors" value="10"/>
+        <property name="globalBand" value="${globalBand}"/>
+        <property name="bandWidthPercentage" value="${bandWidthPercentage}"/>
+        <property name="precalculatePairwiseDistances" value="false"/>
+        <property name="extension" value=""/>
+        <property name="saveLayoutImage" value="false"/>
+        <property name="similarity" ref="${similarityFunction}"/>
+    </bean>
+
+    <bean id="mziDtwWorkerFactory" class="maltcms.commands.fragments.cluster.pairwiseDistanceCalculator.MziDtwWorkerFactory">
+        <property name="anchorRadius" value="${anchorRadius}"/>
+        <property name="useAnchors" value="${useAnchors}"/>
+        <property name="minScansBetweenAnchors" value="10"/>
+        <property name="globalBand" value="${globalBand}"/>
+        <property name="bandWidthPercentage" value="${bandWidthPercentage}"/>
+        <property name="precalculatePairwiseDistances" value="false"/>
+        <property name="extension" value=""/>
+        <property name="saveLayoutImage" value="false"/>
+        <property name="similarity" ref="${similarityFunction}"/>
+    </bean>
+
+    <!-- CenterStarAlignment -->
+
+    <bean id="centerStarAlignment" class="maltcms.commands.fragments.alignment.CenterStarAlignment">
+        <property name="alignToFirst" value="false"/>
+        <property name="centerSequence" value=""/>
+    </bean>
+
+   <!--  ChromatogramWarp -->
+    <bean id="chromatogramWarp" class="maltcms.commands.fragments.warp.ChromatogramWarp2"></bean>
+
+
+</beans>

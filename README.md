@@ -1,8 +1,13 @@
-Evaluation scripts for BiPACE-2D, October 2012
-Author: nils.hoffmann@cebitec.uni-bielefeld.de
-Version: 1.8
-Last updated: Sep. 23rd, 2013
-Changes:
+## Evaluation scripts for BiPACE-2D
+
+Author: nils.hoffmann@cebitec.uni-bielefeld.de   
+Version: 1.9   
+Last updated: Mar. 18th, 2014   
+
+Changes:   
+
+-1.9:
+    -Modularized build, pushed to github
 -1.8:
     -Updated Maltcms Version to 1.3
     -Updated scripts for plot generation
@@ -27,9 +32,9 @@ Changes:
 -1.0:
     -Initial version with evaluation scripts and data.
 
-###########################################################################
-0. Citation:
-###########################################################################
+***
+
+### 0. Citation
 
 If you use any of the material provided in this distribution, we kindly ask
 you to cite the following publications:
@@ -44,9 +49,7 @@ you to cite the following publications:
 More specific information on the supplied datasets and their original
 publications may be found in Section 4 of this document.
 
-###########################################################################
-1. License:
-###########################################################################
+### 1. License:
 
 The source code of this distribution is licensed under the GNU Lesser
 General Public License version 3 or under the terms of the Eclipse Public 
@@ -58,28 +61,23 @@ by any of the above licenses.
 Please see section 4 for details on the datasets contained in this
 distribution.
 
-###########################################################################
-2. Requirements:
-###########################################################################
+### 2. Requirements
 
 -a Unix-compatible operating system (Linux or MacOS X).
 -a recent JAVA SDK, 7, a.k.a 1.7.
 -a recent version of gradle (www.gradle.org), version 1.6.+, please
  follow their installation instructions for your system.
 -a recent installation of GNU-R (www.r-project.org) > 3.0 with 'optparse'
- and 'ggplot2', 'plyr', and 'xtable'.
-    To install from R's command line:
-    > install.packages(c("optparse","ggplot2","plyr","xtable"))
+ and 'ggplot2', 'plyr', and 'xtable'. To install from R's command line:   
+ `> install.packages(c("optparse","ggplot2","plyr","xtable"))`
 -an online connection, at least for the bootstrapping phase (see section 3)
 
-###########################################################################
+***
 
 If you experience problems building and/or running the project, please
 contact the author for assistance. (see head of this document)
 
-###########################################################################
-3. Running the evaluation:
-###########################################################################
+### 3. Running the evaluation:
 
 Please note that the evaluation will place a HUGE workload on your
 computer for a long time. Total runtime depends largely on the
@@ -90,11 +88,14 @@ have been adapted to allow immediate execution on stand-alone computer
 hardware for the 'mSPA_Dataset_I_short' configuration.
 
 At your command prompt, enter
->bin/runEvaluation.sh -l
+
+    >bin/runEvaluation.sh -l
+
 to list the evaluation configurations that are available.
 
 Select one of those evaluations (the _short one is for demonstration only):
->bin/runEvaluation.sh -n mSPA_Dataset_I_short
+
+    >bin/runEvaluation.sh -n mSPA_Dataset_I_short
 
 The evaluation will begin by bootstrapping (downloading) the required
 external libraries before compiling the evaluation code. It will then run
@@ -103,15 +104,17 @@ will by default run using the local profile (-p local, below etc/ directory).
 If you plan to run the evaluation on a grid system, please customize 
 one of the cluster or clusterCebitec profiles for your own needs and run the 
 evaluation like:
->bin/runEvaluation.sh -n mSPA_Dataset_I -p cluster
+
+    >bin/runEvaluation.sh -n mSPA_Dataset_I -p cluster
 
 You may alternatively also submit the evaluation script itself to run on 
 the cluster using the followin command:
->bin/runGridEvaluation.sh -n mSPA_Dataset_I -p cluster
+
+    >bin/runGridEvaluation.sh -n mSPA_Dataset_I -p cluster
 
 Finally, the evaluation will create output in the
 
-results/mSPA_Dataset_I_short/evaluation
+    results/mSPA_Dataset_I_short/evaluation
 
 directory.
 
@@ -123,7 +126,7 @@ of those metrics.
 You can find a list of available configurations in the 'instances.txt' file.
 The configurations themselves are located in the
 
-scripts/src/main/scripts/cfg/
+    scripts/src/main/scripts/cfg/
 
 folder. Within that folder, the file 'Defaults.groovy' contains the default
 values for parallel execution (local host and grid engine). This file
@@ -133,26 +136,24 @@ The peak lists and derived reference multiple alignments are located in the
 following folders:
 
 for MSPA EVALUATION:
-mSPA/
+`mSPA/`
 
 for SWPA EVALUATION:
-SWPA/
+`SWPA/`
 
 for CHLAMY EVALUATION:
-chlamy/
+`chlamy/`
 
 All folders have the same substructure ('data','groundTruth') and contain
 further 'README' files with additional information.
 
-###########################################################################
-3.1 Customization:
-###########################################################################
+#### 3.1 Customization:
 
 To change the number of parallel processes, change the
 
 'maxThreads' property (under 'execution') in
 
-scripts/src/main/scripts/cfg/Defaults.groovy
+`scripts/src/main/scripts/cfg/Defaults.groovy`
 
 to the number of cpus available on your system.
 
@@ -163,40 +164,40 @@ Please also set the value
 under 'environments cluster qsub' to 'false' to turn off the use of grid submission.
 Finally, the number of cpus to use for each Maltcms instance
 
-cross.Factory.maxthreads = 4
+    cross.Factory.maxthreads = 4
 
 can be set in
-cfg/cemappDtw.properties and cfg/cemappDtwRt.properties and should be set to one.
+`cfg/cemappDtw.properties` and `cfg/cemappDtwRt.properties` and should be set to one.
 This value should be matched by
 
-cpusPerJob = 4
+    cpusPerJob = 4
 
-under 'java' in scripts/src/main/scripts/cfg/Defaults.groovy.
+under 'java' `in scripts/src/main/scripts/cfg/Defaults.groovy`.
 
-Instance-specific configuration may be found in the respective *.groovy files
-below scripts/src/main/scripts/cfg/. For example the configuration for mSPA_Dataset_I
-is to be found in scripts/src/main/scripts/cfg/mSPA_Dataset_I.groovy
+Instance-specific configuration may be found in the respective `*.groovy` files
+below `scripts/src/main/scripts/cfg/`. For example the configuration for mSPA_Dataset_I
+is to be found in `scripts/src/main/scripts/cfg/mSPA_Dataset_I.groovy`
 
-###########################################################################
+***
 
 In order to save some memory, you can set
 
-cross.datastructures.fragments.FileFragment.useCachedList = true
+    cross.datastructures.fragments.FileFragment.useCachedList = true
 
-in cfg/evaluationDefaults.properties. This will limit the number of mass spectra
+in `cfg/evaluationDefaults.properties`. This will limit the number of mass spectra
 kept in memory.
 
-###########################################################################
-# 3.2 Known issues:
-###########################################################################
+***
+
+#### 3.2 Known issues
+
 Due to distributed file system synchronization issues during a grid-based evaluation,
 the evaluation may fail in rare cases. We have implemented waiting times between completion 
 of the drmaa API calls and the post processing of file results. Should you
 encounter this issue, please contact the author.
 
-###########################################################################
-4. Notes and References:
-###########################################################################
+### 4. Notes and References
+
 -Evaluation scripts, source-code, and assets
 
  Hoffmann, et al., "BiPACE2D - Graph-based multiple alignment for comprehensive
@@ -207,8 +208,9 @@ encounter this issue, please contact the author.
  13:214, doi:10.1186/1471-2105-13-214
 
  The source code of this evaluation, except for the mSPA and SWPA implementations,
- is licensed under the Lesser GNU General Public License version 3. The license text
- is contained in the file LICENSE in the same directory as this README.
+ is licensed under the Lesser GNU General Public License version 3 or the Eclipse Public License,
+ version 1. The license text is contained in the files LICENSE.LGPL and LICENSE.EPL in the same
+ directory as this README.
 
 -Maltcms, the framework behind BiPACE, BiPACE2D is available at
  http://maltcms.sf.net

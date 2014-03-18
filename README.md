@@ -40,7 +40,8 @@ If you use any of the material provided in this distribution, we kindly ask
 you to cite the following publications:
 
  Hoffmann et al., "BiPACE2D - Graph-based multiple alignment for comprehensive
- two-dimensional gas chromatography-mass spectrometry", Bioinformatics, 2013
+ two-dimensional gas chromatography-mass spectrometry", Bioinformatics, 2013;
+ doi: 10.1093/bioinformatics/btt738
 
  Hoffmann et al., "Combining peak- and chromatogram-based retention time
  alignment algorithms for multiple chromatography-mass spectrometry
@@ -198,10 +199,11 @@ encounter this issue, please contact the author.
 
 ### 4. Notes and References
 
--Evaluation scripts, source-code, and assets
+#### Evaluation scripts, source-code, and assets
 
- Hoffmann, et al., "BiPACE2D - Graph-based multiple alignment for comprehensive
- two-dimensional gas chromatography-mass spectrometry", Bioinformatics, 2013, ...
+ Hoffmann et al., "BiPACE2D - Graph-based multiple alignment for comprehensive
+ two-dimensional gas chromatography-mass spectrometry", Bioinformatics, 2013;
+ doi: 10.1093/bioinformatics/btt738
 
  Hoffmann et al., "Combining peak- and chromatogram-based retention time alignment algorithms
  for multiple chromatography-mass spectrometry datasets", BMC Bioinformatics, 2012,
@@ -212,10 +214,10 @@ encounter this issue, please contact the author.
  version 1. The license text is contained in the files LICENSE.LGPL and LICENSE.EPL in the same
  directory as this README.
 
--Maltcms, the framework behind BiPACE, BiPACE2D is available at
+ Maltcms, the framework behind BiPACE, BiPACE2D is available at
  http://maltcms.sf.net
 
--mSPA samples (directory 'mSPA')
+#### mSPA samples (directory 'mSPA')
 
  The original scripts were altered to allow more diagnostic and graphical output.
  Use the --plot=TRUE option for mSPA-evaluation.R to see the plots.
@@ -238,7 +240,7 @@ encounter this issue, please contact the author.
  Chromatography Mass Spectrometry Using Mixture Similarity Measure", Bioinformatics, 2011,
  27:12, doi:10.1093/bioinformatics/btr188
 
--SWPA samples (directory 'SWPA')
+#### SWPA samples (directory 'SWPA')
 
  We applied the same adaptations as for the mSPA source code. This was possible,
  since both codebases share a large amount of common functionality. In fact, SWPA
@@ -256,7 +258,7 @@ encounter this issue, please contact the author.
  gas chromatography-mass spectrometry", BMC Bioinformatics, 2011, 12:1,
  doi:10.1186/1471-2105-12-235
 
--Chlamydomonas reinhardtii samples (directory 'chlamy')
+#### Chlamydomonas reinhardtii samples (directory 'chlamy')
 
  The original analysis was published in:
 
@@ -269,7 +271,7 @@ encounter this issue, please contact the author.
 
  http://www.ebi.ac.uk/metabolights/MTBLS37
 
-- Guineu (directory 'guineu')
+#### Guineu (directory 'guineu')
  
  We checked out the source code of Guineu, revision 786 from
  svn checkout http://guineu.googlecode.com/svn/trunk/ guineu-read-only
@@ -291,4 +293,3 @@ encounter this issue, please contact the author.
  Chromatography/Time-of-Flight Mass Spectrometry", Analytical Chemistry,
  2011, 83:8, doi:10.1021/ac103308x
 
-###########################################################################

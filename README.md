@@ -6,35 +6,35 @@ Last updated: Mar. 18th, 2014
 
 Changes:   
 
--1.9:
-    -Modularized build, pushed to github
--1.8:
-    -Updated Maltcms Version to 1.3
-    -Updated scripts for plot generation
--1.7:
-    -Integrated Guineu
-    -Updated evaluation to include pairwise alignment performance
-    -Updated evaluation graphics scripts
--1.6:
-    -Updated maltcms configuration and version
--1.5:
-    -Cleaned up directories, relocated maltcms
--1.4:
-    -Updated references
--1.3:
-    -Fixed manual reference problems for chlamy_Dataset_I
-    -Updated references
--1.2:
-    -Removed old scripts.
-    -Relocated output of evaluations to directory "results"
--1.1:
-    -Fixed R package installation function typo.
--1.0:
-    -Initial version with evaluation scripts and data.
+* 1.9:
+    + Modularized build, pushed to github
+* 1.8:
+    + Updated Maltcms Version to 1.3
+    + Updated scripts for plot generation
+* 1.7:
+    + Integrated Guineu
+    + Updated evaluation to include pairwise alignment performance
+    + Updated evaluation graphics scripts
+* 1.6:
+    + Updated maltcms configuration and version
+* 1.5:
+    + Cleaned up directories, relocated maltcms
+* 1.4:
+    + Updated references
+* 1.3:
+    + Fixed manual reference problems for chlamy_Dataset_I
+    + Updated references
+* 1.2:
+    + Removed old scripts.
+    + Relocated output of evaluations to directory "results"
+* 1.1:
+    + Fixed R package installation function typo.
+* 1.0:
+    + Initial version with evaluation scripts and data.
 
 ***
 
-### 0. Citation
+### Citation
 
 If you use any of the material provided in this distribution, we kindly ask
 you to cite the following publications:
@@ -63,14 +63,14 @@ distribution.
 
 ### 2. Requirements
 
--a Unix-compatible operating system (Linux or MacOS X).
--a recent JAVA SDK, 7, a.k.a 1.7.
--a recent version of gradle (www.gradle.org), version 1.6.+, please
+* a Unix-compatible operating system (Linux or MacOS X).
+* a recent JAVA SDK, 7, a.k.a 1.7.
+* a recent version of gradle (www.gradle.org), version 1.6.+, please
  follow their installation instructions for your system.
--a recent installation of GNU-R (www.r-project.org) > 3.0 with 'optparse'
+* a recent installation of GNU-R (www.r-project.org) > 3.0 with 'optparse'
  and 'ggplot2', 'plyr', and 'xtable'. To install from R's command line:   
  `> install.packages(c("optparse","ggplot2","plyr","xtable"))`
--an online connection, at least for the bootstrapping phase (see section 3)
+* an online connection, at least for the bootstrapping phase (see section 3)
 
 ***
 

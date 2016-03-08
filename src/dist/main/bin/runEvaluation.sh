@@ -54,6 +54,7 @@ done
 #change to the resolved scriptfile location
 cd "`dirname \"$SCRIPTFILE\"`"
 SCRIPTDIR="`pwd -P`"
+. "$SCRIPTDIR/checkGnuTools.sh"
 EVALUATIONSCRIPTDEFAULT="BiPace2DEvaluation.groovy"
 OUTPUTBASEDIR="$SCRIPTDIR/../results"
 CFGENVIRONMENT="local"
@@ -117,7 +118,11 @@ fi
 if [ -z "$WORKDIR" ]; then
     WORKDIR="$SCRIPTDIR/.."
 fi
-WORKDIR="$(readlink -f $WORKDIR)"
+if [[ `uname` == 'Darwin' ]]; then
+    WORKDIR="$(greadlink -f $WORKDIR)"
+else
+    WORKDIR="$(readlink -f $WORKDIR)"
+fi
 
 echo "Using working dir $WORKDIR"
 echo "Storing output below $OUTPUTBASEDIR"
@@ -159,7 +164,7 @@ SETTINGS="settings-$CFGENVIRONMENT.sh"
 if [ -f "$WORKDIR/etc/$SETTINGS" ]; then
     echo $(arch)
     echo "Sourcing settings file $WORKDIR/etc/$SETTINGS"
-    source "$WORKDIR/etc/$SETTINGS"
+        source "$WORKDIR/etc/$SETTINGS"
 else
     JAVA_OPTS="-d64 -Xms16G -Xmx16G -XX:MaxPermSize=2G"
     echo "Exporting default JAVA_OPTS=$JAVA_OPTS"

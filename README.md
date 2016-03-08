@@ -1,11 +1,13 @@
 ## Evaluation scripts for BiPACE-2D
 
 Author: nils.hoffmann@cebitec.uni-bielefeld.de   
-Version: 1.9   
-Last updated: Mar. 18th, 2014   
+Version: 2.0   
+Last updated: Mar. 8th, 2016   
 
 Changes:   
-
+* 2.0:
+    + Updated dependencies, fixed download issues with sourceforge.
+    + Fixed script issues on MacOSX. Print warning if gnutools is not installed.
 * 1.9:
     + Modularized build, pushed to github
 * 1.8:
@@ -79,6 +81,13 @@ If you experience problems building and/or running the project, please
 contact the author for assistance. (see head of this document)
 
 ### 3. Running the evaluation:
+
+In order to build the evaluation distribution, please run 
+
+    >gradle dist
+
+In order to run the evaluation, change to the `build/dist` directory
+and unzip the `BiPACE2D-evaluation-src.zip` file.
 
 Please note that the evaluation will place a HUGE workload on your
 computer for a long time. Total runtime depends largely on the

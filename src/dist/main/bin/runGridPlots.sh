@@ -44,6 +44,7 @@ done
 #change to the resolved scriptfile location
 cd "`dirname \"$SCRIPTFILE\"`"
 SCRIPTDIR="`pwd -P`"
+. "$SCRIPTDIR/checkGnuTools.sh"
 EVALUATIONSCRIPT=""
 OUTPUTBASEDIR="$SCRIPTDIR/../results"
 CFGENVIRONMENT="cluster"
@@ -104,7 +105,11 @@ fi
 if [ -z "$WORKDIR" ]; then
     WORKDIR="$SCRIPTDIR/.."
 fi
-WORKDIR="$(readlink -f $WORKDIR)"
+if [[ `uname` == 'Darwin' ]]; then
+    WORKDIR="$(greadlink -f $WORKDIR)"
+else
+    WORKDIR="$(readlink -f $WORKDIR)"
+fi
 echo "Using working dir $WORKDIR"
 echo "Using output dir $OUTPUTBASEDIR"
 echo "Using profile $CFGENVIRONMENT"

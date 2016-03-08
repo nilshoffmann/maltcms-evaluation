@@ -173,7 +173,7 @@ write.table(f1BestInstanceByRef,file="f1BestInstanceByRef.csv",sep="\t",row.name
 cat("> F1 plot","\n")
 #COL <- length(unique(evaluation$MCS))
 f1plot <- ggplot(evaluationSubset,aes(name,F1))+
-  geom_boxplot(scale="count",aes(color=Similarity),outlier.size=1.0)+
+  geom_boxplot(aes(color=Similarity),outlier.size=1.0)+
   #geom_jitter(height = 0,size=0.3)+
   scale_colour_brewer(palette=colorPalette,name="Similarity") +
   #geom_errorbar(aes(ymin=min,ymax=max),position="dodge")+

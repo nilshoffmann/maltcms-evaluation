@@ -2,7 +2,7 @@
 #export JMX management bean for vm monitoring
 JMX_PORT=17400
 #settings for the groovy evaluation script
-JAVA_OPTS="-d64 -Xmx32G -XX:MaxPermSize=4G -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+JAVA_OPTS="-d64 -Xmx32G -XX:MaxPermSize=4G -Xverify:none -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=$JMX_PORT -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
 export JAVA_OPTS
 #optional set R_LIBS location
 R_LIBS="/vol/cluster-data/hoffmann/r-modules"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-JAVA_OPTS="-d64 -Xms4G -Xmx4G -XX:MaxPermSize=1G"
+JAVA_OPTS="-d64 -Xms4G -Xmx4G -XX:MaxPermSize=1G -Xverify:none"
 export JAVA_OPTS
 #optional set R_LIBS location
 #R_LIBS=""

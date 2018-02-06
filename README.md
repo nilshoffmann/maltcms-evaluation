@@ -90,7 +90,7 @@ In order to build the evaluation distribution, please run
 
     >./gradlew dist
 
-In order to run the evaluation, change to the `build/dist` directory
+In order to run the evaluation, change to the `build/distributions` directory
 and unzip the `BiPACE2D-evaluation-src.zip` file.
 
 Please note that the evaluation will place a HUGE workload on your

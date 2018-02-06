@@ -1,10 +1,14 @@
 ## Evaluation scripts for BiPACE-2D
 
-Author: nils.hoffmann@cebitec.uni-bielefeld.de   
-Version: 2.0   
-Last updated: Mar. 8th, 2016   
+Author: nils.hoffmann@isas.de   
+Version: 2.1   
+Last updated: Feb. 6th, 2018   
 
 Changes:   
+* 2.1:
+    + Updated dependencies to newer Groovy version, migrated project to GitHub.
+    + Added Gradle-Wrapper.
+    + Fixed plotting issues with newer versions of ggplot2.
 * 2.0:
     + Updated dependencies, fixed download issues with sourceforge.
     + Fixed script issues on MacOSX. Print warning if gnutools is not installed.
@@ -67,8 +71,8 @@ distribution.
 ### 2. Requirements
 
 * a Unix-compatible operating system (Linux or MacOS X).
-* a recent JAVA SDK, 7, a.k.a 1.7.
-* a recent version of gradle (www.gradle.org), version 1.6.+, please
+* a recent JAVA SDK, 8, a.k.a 1.8.
+* a recent version of gradle (www.gradle.org), version 3.2.1.+, please
  follow their installation instructions for your system.
 * a recent installation of GNU-R (www.r-project.org) > 3.0 with 'optparse'
  and 'ggplot2', 'plyr', and 'xtable'. To install from R's command line:   
@@ -84,7 +88,7 @@ contact the author for assistance. (see head of this document)
 
 In order to build the evaluation distribution, please run 
 
-    >gradle dist
+    >./gradlew dist
 
 In order to run the evaluation, change to the `build/dist` directory
 and unzip the `BiPACE2D-evaluation-src.zip` file.
@@ -236,6 +240,10 @@ encounter this issue, please contact the author.
  for reference selection and definition of the multiple-alignment ground truth that
  is later used during alignment evaluation and avoids some of the shortcomings of
  the original approach.
+
+ To recreate the MGMA data and diagnostic plots, please run bash createGroundTruths.sh within the mSPA
+ directory. The script will create subdirectories for all datasets (mSPA, SWPA,...) within the 
+ current directory.
 
  Please consult the mSPA/README file for further information.
 

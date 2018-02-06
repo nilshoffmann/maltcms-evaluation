@@ -53,6 +53,7 @@ done
 
 #change to the resolved scriptfile location
 cd "`dirname \"$SCRIPTFILE\"`"
+SCRIPTDIR="`pwd -P`"
 . "$SCRIPTDIR/checkGnuTools.sh"
 OUTPUTBASEDIR="$SCRIPTDIR/../results"
 CFGENVIRONMENT="local"

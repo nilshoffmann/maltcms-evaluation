@@ -182,7 +182,7 @@ fi
 
 echo -e "Running on host: $HOSTNAME"
 
-gradle build
+./gradlew build
 retval=$?
 if [ $retval != 0 ] ; then
     echo "Build failed with value $retval"

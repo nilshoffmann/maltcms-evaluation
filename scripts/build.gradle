@@ -20,12 +20,11 @@ project.ext {
 //below is the original build version of the maltcms release used for the evaluation
     //https://maltcms.de/artifactory/libs-snapshot-local/net/sf/maltcms/maltcms-distribution/1.3-SNAPSHOT/maltcms-distribution-1.3-20130610.141219-71.zip
     maltcms_filename="maltcms-distribution-1.3-20130909.102417-107.zip"
-    maltcms_download="http://maltcms.de/artifactory/libs-snapshot-local/net/sf/maltcms/maltcms-distribution/1.3-SNAPSHOT/${maltcms_filename}"
+    maltcms_download="https://github.com/nilshoffmann/maltcms-evaluation/releases/download/assets-v1.0.0/${maltcms_filename}"
     groovy_version="2.4.13"
     groovy_dir="groovy-${groovy_version}"
     groovy_zip="apache-groovy-binary-${groovy_version}.zip"
     groovy_download="https://dl.bintray.com/groovy/maven/${groovy_zip}"
-//    groovy_download="https://bintray.com/artifact/download/groovy/maven/${groovy_zip}"
 }
 
 sourceSets {
@@ -57,88 +56,94 @@ dependencies {
     )
 }
 
-task getGroovy << {
+task getGroovy {
     description = 'Fetches groovy ${groovy_version} binary distribution.'
-    if(new File("groovy").exists()) {
-        println "groovy dir exists, skipping download! (Delete groovy dir to force download)"
-    }else{
-        println "Downloading ${groovy_zip}"
-        ant.get(
-            src:"${groovy_download}",
-            dest:"${groovy_zip}",
-            skipexisting:true
-        )
-       println "Extracting ${groovy_zip}"
-       ant.unzip(
-           src:"${groovy_zip}",
-           dest:".",
-           overwrite: false
-       )
-       println "Renaming to groovy!"
-       ant.move(
-           file:"${groovy_dir}",
-           toFile:"groovy",
-           overwrite:false
-       )
-       ant.delete(
-        file:"${groovy_zip}"
-       )
-       ant.delete(
-        file:"${groovy_dir}"
-       )
-       ant.chmod(
-        dir:"groovy/bin",
-        includes:"*",
-        perm:"ugo+rx"
-       )
+    doLast {
+        if(new File("groovy").exists()) {
+	    println "groovy dir exists, skipping download! (Delete groovy dir to force download)"
+        }else{
+	    println "Downloading ${groovy_zip}"
+	    ant.get(
+	        src:"${groovy_download}",
+	        dest:"${groovy_zip}",
+	        skipexisting:true
+	    )
+           println "Extracting ${groovy_zip}"
+           ant.unzip(
+	       src:"${groovy_zip}",
+	       dest:".",
+	       overwrite: false
+           )
+           println "Renaming to groovy!"
+           ant.move(
+	       file:"${groovy_dir}",
+	       toFile:"groovy",
+	       overwrite:false
+           )
+           ant.delete(
+	    file:"${groovy_zip}"
+           )
+           ant.delete(
+	    file:"${groovy_dir}"
+           )
+           ant.chmod(
+	    dir:"groovy/bin",
+	    includes:"*",
+	    perm:"ugo+rx"
+           )
+        }
     }
 }
-task getMaltcms << {
+task getMaltcms {
     description = 'Fetches maltcms ${maltcms_version} binary distribution.'
-    if(new File("maltcms").exists()) {
-        println "maltcms dir exists, skipping download! (Delete maltcms dir manually to force download)"
-    }else{
-        println "Downloading ${maltcms_filename}"
-        ant.get(
-            src:"${maltcms_download}",
-            dest:"${maltcms_zip}",
-            skipexisting:true
-        )
-       println "Extracting ${maltcms_zip}"
-       ant.unzip(
-           src:"${maltcms_zip}",
-           dest:".",
-           overwrite: false
-       )
-       println "Renaming to maltcms!"
-       ant.move(
-           file:"${maltcms_dir}",
-           toFile:"maltcms",
-           overwrite:false
-       )
-       ant.delete(
-        file:"${maltcms_zip}"
-       )
-       ant.delete(
-        file:"${maltcms_dir}" 
-       )
-       ant.chmod(
-        dir:"maltcms/",
-        includes:"**/*.sh",
-        perm:"ugo+rx"
-       )
-       if(new File("maltcms/lib/slf4j-jdk14-1.7.2.jar").exists()) {
-        ant.delete(file:"maltcms/lib/slf4j-jdk14-1.7.2.jar")
-       }
+    doLast {
+        if(new File("maltcms").exists()) {
+            println "maltcms dir exists, skipping download! (Delete maltcms dir manually to force download)"
+        }else{
+            println "Downloading ${maltcms_filename}"
+            ant.get(
+                src:"${maltcms_download}",
+                dest:"${maltcms_zip}",
+                skipexisting:true
+            )
+           println "Extracting ${maltcms_zip}"
+           ant.unzip(
+               src:"${maltcms_zip}",
+               dest:".",
+               overwrite: false
+           )
+           println "Renaming to maltcms!"
+           ant.move(
+               file:"${maltcms_dir}",
+               toFile:"maltcms",
+               overwrite:false
+           )
+           ant.delete(
+            file:"${maltcms_zip}"
+           )
+           ant.delete(
+            file:"${maltcms_dir}" 
+           )
+           ant.chmod(
+            dir:"maltcms/",
+            includes:"**/*.sh",
+            perm:"ugo+rx"
+           )
+           if(new File("maltcms/lib/slf4j-jdk14-1.7.2.jar").exists()) {
+            ant.delete(file:"maltcms/lib/slf4j-jdk14-1.7.2.jar")
+           }
+        }
     }
 }
 //set dependent tasks
 compileJava.dependsOn getGroovy,getMaltcms
 
-task cleanUp << {
+task cleanUp {
     description = 'Removes binary distribution directories.'
-    ant.delete(dir:'maltcms/')
-    ant.delete(dir:'groovy/')
+    doLast {
+        ant.delete(dir:'maltcms/')
+        ant.delete(dir:'groovy/')
+    }
 }
 
 clean.doLast{

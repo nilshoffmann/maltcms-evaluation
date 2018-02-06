@@ -145,7 +145,7 @@ else
     cd "$WORKDIR/scripts"
 fi
 
-gradle build
+./gradle build
 retval=$?
 if [ $retval != 0 ] ; then
     echo "Build failed with value $retval"

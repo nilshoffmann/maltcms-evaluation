@@ -2,8 +2,8 @@ language: java
 jdk:
   - openjdk8
 
-before_install:
-  - chmod +x gradlew
+before_script:
+  - chmod a+x gradlew
 
-install: ./gradlew dist
+script: ./gradlew dist
 

@@ -29,7 +29,11 @@ make_option("--table5", default="NULL",
 make_option("--labels", default="NULL",
             help="Comma separated list of labels. [default \"%default\"]"),
 make_option("--sep", default="\t",
-            help="Separator to use while parsing. [default \"%default\"]")
+            help="Separator to use while parsing. [default \"%default\"]"),
+make_option("--suffix", default="NULL",
+	    help="Suffix for plot file names. [default \"%default\"]"),
+make_option("--outdir", default="",
+            help="The output directory to store plots in. [default \"%default\"]")	    
 )
 options(error=traceback)
 opt <- parse_args(OptionParser(option_list=option_list))
@@ -52,9 +56,13 @@ if(length(grep("--file",commandArgs(trailingOnly = FALSE)))>0) {
   }
 }
 vennDiagram.script <- paste(sep="/", script.basedir, "vennDiagram.R")
-
+outdir <- opt$outdir
+if(!dir.exists(file.path(outdir))) { 
+  dir.create(file.path(outdir))
+}
 #setwd(opt$directory)
 sep <- opt$sep
+file.suffix = opt$suffix
 tables <- c()
 if(opt$table1!="NULL") {
   tables <- c(tables,opt$table1)
@@ -84,6 +92,8 @@ if(labels=="NULL") {
   }
 }
 source(vennDiagram.script)
+setwd(outdir)
 alignmentTables <- readAlignmentTables(tables,labels)
 instanceIds <- createIds(alignmentTables)
-createVennPlot(instanceIds,alignmentTables)
+createVennPlot(allInstanceIds=instanceIds,tables=alignmentTables,plotName=paste0("venn-diagram.",file.suffix))
+setwd(call.dir)

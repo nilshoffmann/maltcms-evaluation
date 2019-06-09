@@ -36,9 +36,12 @@ repositories {
 }
 
 task getAssets() {
+    doFirst {
+	mkdir "${assets_dir}"
+    }
     doLast {
         description = 'Fetches assets from sourceforge.'
-        new File("${assets_dir}").mkdirs()
+//        new File("${assets_dir}").mkdirs()
         assets.each{ 
             asset -> 
                 def assetFile = new File("${assets_dir}/${asset}")
